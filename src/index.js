@@ -5,10 +5,10 @@ const Sequelize = require('sequelize');
 // Setup Sequelize and Connection with Database
 // ======================================================
 export default (config) => {
-    const dbName = config('name');
-    const dbUsername = config('username');
-    const dbPassword = config('password');
-    const dbOptions = config('options');
+  const dbName = config('name');
+  const dbUsername = config('username');
+  const dbPassword = config('password');
+  const dbOptions = config('options');
 
   const models = {};
   const sequelize = new Sequelize(dbName, dbUsername, dbPassword, dbOptions);
@@ -23,8 +23,10 @@ export default (config) => {
 
   // Synchronize all the defined model into the actual mySQL database
   // ========================================================================
-  sequelize.sync().then(() => {}, (error) => {
-    return console.error(error);
+  return sequelize.sync().then(() => {
+    return models;
+  }, error => {
+    return console.log(error);
   });
 }
 
