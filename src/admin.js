@@ -1,7 +1,6 @@
-'use strict';
-
 const bcrypt = require('bcrypt');
 const uuid = require('node-uuid');
+
 const saltRound = 8;
 
 module.exports = function (sequelize, DataTypes) {
@@ -16,7 +15,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       unique: true,
       validate: {
-        is: /^[a-z0-9\_\-]+$/i
+        is: /^[a-z0-9_-]+$/i
       }
     },
     password: DataTypes.STRING,
