@@ -9,7 +9,7 @@ $ git clone git@github.com:collab-tools/collab-db-logging.git
 $ npm install
 
 // Compilng the code
-$ npm run build
+$ npm run compile
 ```
 
 ## Usage
