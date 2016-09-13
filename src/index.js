@@ -21,9 +21,10 @@ export default (config) => {
 
   // Synchronize all the defined model into the actual mySQL database
   // ========================================================================
-  return sequelize.sync().then(() => {
-    return models;
-  }, error => {
-    return console.log(error);
-  });
+  sequelize.sync()
+    .then(() => {}, error => {
+      console.log(error);
+    });
+
+  return models;
 };
