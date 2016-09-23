@@ -28,6 +28,11 @@ module.exports = function (sequelize, DataTypes) {
         if (range) where.date = { $gt: range };
         return this.findAll({ where });
       },
+      getByRange(range) {
+        const where = {};
+        if (range) where.date = { $gt: range };
+        return this.findAndCountAll({ where });
+      },
       createLog(logInfo) {
         logInfo.id = uuid.v4();
         return this.create(logInfo);
