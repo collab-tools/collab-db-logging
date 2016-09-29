@@ -18,11 +18,6 @@ module.exports = function (sequelize, DataTypes) {
         const where = { userId };
         return this.findAll({ where });
       },
-      getByUserProject(userId, projectId, range) {
-        const where = { userId, projectId };
-        if (range) where.date = { $gt: range };
-        return this.findAll({ where });
-      },
       getByProject(projectId, range) {
         const where = { projectId };
         if (range) where.date = { $gt: range };

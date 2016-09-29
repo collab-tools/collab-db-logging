@@ -25,7 +25,7 @@ module.exports = function (sequelize, DataTypes) {
           where,
           attributes: [
             [sequelize.literal('DISTINCT `fileUUID`'), 'fileUUID'], 'fileName', 'fileMIME',
-            'date', 'userId', 'projectId', 'id'
+            'date', 'googleId', 'projectId', 'id'
           ]
         });
       },
@@ -33,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
         const where = { fileUUID };
         return this.findOne({
           where,
-          attributes: ['fileUUID', 'fileName', 'fileMIME', 'date', 'userId', 'projectId', 'id']
+          attributes: ['fileUUID', 'fileName', 'fileMIME', 'date', 'googleId', 'projectId', 'id']
         });
       },
       createLog(logInfo) {

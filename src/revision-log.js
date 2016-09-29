@@ -53,7 +53,9 @@ module.exports = function (sequelize, DataTypes) {
         if (range) where.date = { $gt: range };
         return this.count({
           where,
-          attributes: [[sequelize.literal('DISTINCT `userId`'), 'userId']]
+          attributes: [
+            [sequelize.literal('DISTINCT `googleId`'), 'googleId']
+          ]
         });
       },
       createLog(logInfo) {

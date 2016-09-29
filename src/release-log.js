@@ -14,6 +14,9 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     underscored: true,
     classMethods: {
+      getRelease(id) {
+        return this.findById(id);
+      },
       getReleases(range) {
         const where = {};
         if (range) where.date = { $gt: range };

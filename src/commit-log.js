@@ -38,8 +38,8 @@ module.exports = function (sequelize, DataTypes) {
         if (range) where.date = { $gt: range };
         return this.count({ where });
       },
-      getCommit(commitUUID) {
-        const where = { commitUUID };
+      getCommit(id) {
+        const where = { id };
         return this.findOne({ where });
       },
       getCommits(range) {
