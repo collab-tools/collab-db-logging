@@ -1,4 +1,34 @@
-const Sequelize = require('sequelize');
+import fs from 'fs';
+import winston from 'winston';
+import winstonRotate from 'winston-daily-rotate-file';
+import Sequelize from 'sequelize';
+
+// Setup logger to log connections and queries send to the database
+// ========================================================================
+function setupLogger(logDir) {
+  // configure logger to use as default error handler
+  const tsFormat = () => (new Date()).toLocaleTimeString();
+  if (!fs.existsSync(logDir)) { fs.mkdirSync(logDir); }
+  winston.remove(winston.transports.Console);
+
+  // default transport for console with timestamp and color coding
+  winston.add(winston.transports.Console, {
+    prettyPrint: true,
+    timestamp: tsFormat,
+    colorize: true,
+    level: 'debug'
+  });
+
+  // file transport for debug messages
+  winston.add(winstonRotate, {
+    name: 'debug-transport',
+    filename: `${logDir}/debug.log`,
+    timestamp: tsFormat,
+    level: 'debug'
+  });
+
+  winston.info('Database debugging initialized.');
+}
 
 // Setup Sequelize and Connection with Database
 // ======================================================
@@ -8,12 +38,17 @@ export default (config) => {
   const dbPassword = config.password;
   const dbOptions = config.options;
 
+  // If logging configuration is found, evaluate and setup logger if needed
+  if (config.logging) { setupLogger(config.logging); }
+
   const models = {};
   const sequelize = new Sequelize(dbName, dbUsername, dbPassword, dbOptions);
   models.sequelize = sequelize;
 
-  const modelFiles = ['admin', 'commit-log', 'release-log', 'drive-log',
-    'milestone-log', 'revision-log', 'task-log'];
+  const modelFiles = [
+    'admin', 'commit-log', 'release-log', 'drive-log',
+    'milestone-log', 'revision-log', 'task-log'
+  ];
 
   modelFiles.forEach((model) => {
     models[model.replace('-', '_')] = sequelize.import(`${__dirname}/${model}`);
@@ -21,10 +56,7 @@ export default (config) => {
 
   // Synchronize all the defined model into the actual mySQL database
   // ========================================================================
-  sequelize.sync()
-    .then(() => {}, error => {
-      console.log(error);
-    });
+  sequelize.sync().catch(config.logging ? winston.error : console.error);
 
   return models;
 };
