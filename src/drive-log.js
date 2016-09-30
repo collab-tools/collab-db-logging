@@ -10,6 +10,7 @@ module.exports = function (sequelize, DataTypes) {
     fileUUID: DataTypes.STRING,
     fileName: DataTypes.STRING,
     fileMIME: DataTypes.STRING,
+    fileExtension: DataTypes.STRING,
     date: DataTypes.DATE,
     googleId: DataTypes.STRING,
     projectId: DataTypes.STRING
@@ -25,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
           where,
           attributes: [
             [sequelize.literal('DISTINCT `fileUUID`'), 'fileUUID'], 'fileName', 'fileMIME',
-            'date', 'googleId', 'projectId', 'id'
+            'fileExtension', 'date', 'googleId', 'projectId', 'id'
           ]
         });
       },
@@ -33,7 +34,10 @@ module.exports = function (sequelize, DataTypes) {
         const where = { fileUUID };
         return this.findOne({
           where,
-          attributes: ['fileUUID', 'fileName', 'fileMIME', 'date', 'googleId', 'projectId', 'id']
+          attributes: [
+            'fileUUID', 'fileName', 'fileMIME', 'fileExtension',
+            'date', 'googleId', 'projectId', 'id'
+          ]
         });
       },
       createLog(logInfo) {
