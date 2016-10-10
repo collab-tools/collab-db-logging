@@ -27,6 +27,7 @@
   "homepage": "https://github.com/collab-tools/collab-db-logging#readme",
   "dependencies": {
     "bcrypt": "^0.8.7",
+    "mysql": "^2.11.1",
     "mysql2": "^1.1.0",
     "node-uuid": "^1.4.7",
     "sequelize": "^3.24.3",
