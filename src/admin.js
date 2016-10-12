@@ -21,7 +21,6 @@ module.exports = function (sequelize, DataTypes) {
     password: DataTypes.STRING,
     role: DataTypes.STRING
   }, {
-    underscored: true,
     instanceMethods: {
       comparePassword(password) {
         return bcrypt.compareSync(password, this.password);

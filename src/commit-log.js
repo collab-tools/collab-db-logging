@@ -11,10 +11,15 @@ module.exports = function (sequelize, DataTypes) {
     message: DataTypes.STRING,
     additions: DataTypes.INTEGER,
     deletions: DataTypes.INTEGER,
-    githubLogin: DataTypes.STRING,
-    projectId: DataTypes.STRING
+    githubLogin: {
+      type: DataTypes.STRING,
+      field: 'github_login'
+    },
+    projectId: {
+      type: DataTypes.STRING,
+      field: 'project_id'
+    }
   }, {
-    underscored: true,
     classMethods: {
       getProjectCommits(projectId, range) {
         const where = { projectId };

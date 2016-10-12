@@ -7,15 +7,32 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true
     },
     activity: DataTypes.CHAR,
-    fileUUID: DataTypes.STRING,
-    fileName: DataTypes.STRING,
-    fileMIME: DataTypes.STRING,
-    fileExtension: DataTypes.STRING,
+    fileUUID: {
+      type: DataTypes.STRING,
+      field: 'file_uuid'
+    },
+    fileName: {
+      type: DataTypes.STRING,
+      field: 'file_name'
+    },
+    fileMIME: {
+      type: DataTypes.STRING,
+      field: 'file_mime'
+    },
+    fileExtension: {
+      type: DataTypes.STRING,
+      field: 'file_extension'
+    },
     date: DataTypes.DATE,
-    googleId: DataTypes.STRING,
-    projectId: DataTypes.STRING
+    googleId: {
+      type: DataTypes.STRING,
+      field: 'google_id'
+    },
+    projectId: {
+      type: DataTypes.STRING,
+      field: 'project_id'
+    }
   }, {
-    underscored: true,
     classMethods: {
       getUniqueFiles(projectId, googleId, range) {
         const where = {};

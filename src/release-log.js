@@ -8,11 +8,16 @@ module.exports = function (sequelize, DataTypes) {
     },
     date: DataTypes.DATE,
     assets: DataTypes.STRING,
-    tagName: DataTypes.STRING,
+    tagName: {
+      type: DataTypes.STRING,
+      field: 'tag_name'
+    },
     body: DataTypes.STRING,
-    projectId: DataTypes.STRING
+    projectId: {
+      type: DataTypes.STRING,
+      field: 'project_id'
+    }
   }, {
-    underscored: true,
     classMethods: {
       getRelease(id) {
         return this.findById(id);
