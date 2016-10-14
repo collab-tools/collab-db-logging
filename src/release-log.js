@@ -16,8 +16,11 @@ module.exports = function (sequelize, DataTypes) {
     projectId: {
       type: DataTypes.STRING,
       field: 'project_id'
-    }
+    },
+    createdAt: { type: DataTypes.DATE, field: 'created_at' },
+    updatedAt: { type: DataTypes.DATE, field: 'updated_at' }
   }, {
+    timestamps: true,
     classMethods: {
       getRelease(id) {
         return this.findById(id);

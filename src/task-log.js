@@ -19,8 +19,11 @@ module.exports = function (sequelize, DataTypes) {
     taskId: {
       type: DataTypes.STRING,
       field: 'task_id'
-    }
+    },
+    createdAt: { type: DataTypes.DATE, field: 'created_at' },
+    updatedAt: { type: DataTypes.DATE, field: 'updated_at' }
   }, {
+    timestamps: true,
     classMethods: {
       getByProject(projectId, range) {
         const where = { projectId };

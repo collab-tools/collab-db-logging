@@ -19,8 +19,11 @@ module.exports = function (sequelize, DataTypes) {
     milestoneId: {
       type: DataTypes.STRING,
       field: 'milestone_id'
-    }
+    },
+    createdAt: { type: DataTypes.DATE, field: 'created_at' },
+    updatedAt: { type: DataTypes.DATE, field: 'updated_at' }
   }, {
+    timestamps: true,
     classMethods: {
       getByUserId(userId) {
         const where = { userId };

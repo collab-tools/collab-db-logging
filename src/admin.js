@@ -19,8 +19,11 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
     password: DataTypes.STRING,
-    role: DataTypes.STRING
+    role: DataTypes.STRING,
+    createdAt: { type: DataTypes.DATE, field: 'created_at' },
+    updatedAt: { type: DataTypes.DATE, field: 'updated_at' }
   }, {
+    timestamps: true,
     instanceMethods: {
       comparePassword(password) {
         return bcrypt.compareSync(password, this.password);
