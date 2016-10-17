@@ -1,6 +1,6 @@
-const uuid = require('node-uuid');
+import uuid from 'node-uuid';
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   return sequelize.define('drive_log', {
     id: {
       type: DataTypes.STRING,
@@ -24,10 +24,7 @@ module.exports = function (sequelize, DataTypes) {
       field: 'file_extension'
     },
     date: DataTypes.DATE,
-    googleId: {
-      type: DataTypes.STRING,
-      field: 'google_id'
-    },
+    email: DataTypes.STRING,
     projectId: {
       type: DataTypes.STRING,
       field: 'project_id'
@@ -44,16 +41,16 @@ module.exports = function (sequelize, DataTypes) {
     underscored: true,
     timestamps: true,
     classMethods: {
-      getUniqueFiles(projectId, googleId, range) {
+      getUniqueFiles(projectId, email, range) {
         const where = {};
         if (projectId) where.projectId = projectId;
-        if (googleId) where.googleId = googleId;
+        if (email) where.email = email;
         if (range) where.date = { $gt: range };
         return this.findAll({
           where,
           attributes: [
-            [sequelize.literal('DISTINCT `fileUUID`'), 'fileUUID'], 'fileName', 'fileMIME',
-            'fileExtension', 'date', 'googleId', 'projectId', 'id'
+            [sequelize.fn('DISTINCT', sequelize.col('file_uuid')), 'fileUUID'], 'fileName', 'fileMIME',
+            'fileExtension', 'email', 'projectId'
           ]
         });
       },
@@ -63,18 +60,34 @@ module.exports = function (sequelize, DataTypes) {
           where,
           attributes: [
             'fileUUID', 'fileName', 'fileMIME', 'fileExtension',
-            'date', 'googleId', 'projectId', 'id'
+            'date', 'email', 'projectId', 'id'
           ]
         });
       },
       createLog(logInfo) {
         logInfo.id = uuid.v4();
         return this.create(logInfo);
+      },
+      upsertLog(logInfo) {
+        const where = {
+          activity: logInfo.activity,
+          fileUUID: logInfo.fileUUID
+        };
+        const defaultDrive = {
+          id: uuid.v4(),
+          fileName: logInfo.fileName,
+          fileMIME: logInfo.fileMIME,
+          fileExtension: logInfo.fileExtension,
+          date: logInfo.date,
+          email: logInfo.email,
+          projectId: logInfo.projectId
+        };
+        return this.findOrCreate({ where, defaults: defaultDrive })
+          .then((instance, created) => {
+            const fileNameChanged = logInfo.fileName !== instance.fileName;
+            return (created || fileNameChanged) ? instance : this.update(logInfo);
+          });
       }
-    },
-    activityCode: {
-      CREATE: 'C',
-      DELETED: 'D'
     }
   });
 };
