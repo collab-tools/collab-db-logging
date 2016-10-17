@@ -1,6 +1,6 @@
-const uuid = require('node-uuid');
+import uuid from 'node-uuid';
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   return sequelize.define('task_log', {
     id: {
       type: DataTypes.STRING,
@@ -11,6 +11,10 @@ module.exports = function (sequelize, DataTypes) {
     userId: {
       type: DataTypes.STRING,
       field: 'user_id'
+    },
+    milestoneId: {
+      type: DataTypes.STRING,
+      field: 'milestone_id'
     },
     projectId: {
       type: DataTypes.STRING,
@@ -37,19 +41,15 @@ module.exports = function (sequelize, DataTypes) {
         if (range) where.date = { $gt: range };
         return this.findAll({ where });
       },
-      createLog(logInfo) {
-        logInfo.id = uuid.v4();
-        return this.create(logInfo);
-      },
       getByRange(range) {
         const where = {};
         if (range) where.date = { $gt: range };
         return this.findAndCountAll({ where });
+      },
+      createLog(logInfo) {
+        logInfo.id = uuid.v4();
+        return this.create(logInfo);
       }
-    },
-    activityCode: {
-      CREATE: 'C',
-      DONE: 'D'
     }
   });
 };
