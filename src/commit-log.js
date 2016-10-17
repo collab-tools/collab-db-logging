@@ -1,6 +1,6 @@
-const uuid = require('node-uuid');
+import uuid from 'node-uuid';
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   return sequelize.define('commit_log', {
     id: {
       type: DataTypes.STRING,
@@ -9,8 +9,6 @@ module.exports = function (sequelize, DataTypes) {
     date: DataTypes.DATE,
     sha: DataTypes.STRING,
     message: DataTypes.STRING,
-    additions: DataTypes.INTEGER,
-    deletions: DataTypes.INTEGER,
     githubLogin: {
       type: DataTypes.STRING,
       field: 'github_login'
@@ -63,8 +61,17 @@ module.exports = function (sequelize, DataTypes) {
         return this.findAll({ where });
       },
       createLog(logInfo) {
-        logInfo.id = uuid.v4();
-        return this.create(logInfo);
+        const where = {
+          sha: logInfo.sha,
+          projectId: logInfo.sha
+        };
+        const commitDefault = {
+          id: uuid.v4(),
+          date: logInfo.date,
+          message: logInfo.message,
+          githubLogin: logInfo.githubLogin
+        };
+        return this.findOrCreate({ where, defaults: commitDefault });
       }
     }
   });
