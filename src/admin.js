@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
-const uuid = require('node-uuid');
+import bcrypt from 'bcrypt';
+import uuid from 'node-uuid';
 
 const saltRound = 8;
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   return sequelize.define('admin', {
     id: {
       type: DataTypes.STRING,
