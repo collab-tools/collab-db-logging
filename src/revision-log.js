@@ -1,6 +1,6 @@
-const uuid = require('node-uuid');
+import uuid from 'node-uuid';
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   return sequelize.define('revision_log', {
     id: {
       type: DataTypes.STRING,
@@ -18,11 +18,12 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       field: 'file_mime'
     },
-    date: DataTypes.DATE,
-    googleId: {
+    revisionUUID: {
       type: DataTypes.STRING,
-      field: 'google_id'
+      field: 'revision_uuid'
     },
+    date: DataTypes.DATE,
+    email: DataTypes.STRING,
     projectId: {
       type: DataTypes.STRING,
       field: 'project_id'
@@ -50,14 +51,14 @@ module.exports = function (sequelize, DataTypes) {
         if (fileUUID) where.fileUUID = fileUUID;
         return this.findAll({ where });
       },
-      getUserRevisions(googleId, fileUUID, range) {
-        const where = { googleId };
+      getUserRevisions(email, fileUUID, range) {
+        const where = { email };
         if (range) where.date = { $gt: range };
         if (fileUUID) where.fileUUID = fileUUID;
         return this.findAll({ where });
       },
-      getUserRevisionsByProject(googleId, projectId, fileUUID, range) {
-        const where = { googleId, projectId };
+      getUserRevisionsByProject(email, projectId, fileUUID, range) {
+        const where = { email, projectId };
         if (range) where.date = { $gt: range };
         if (fileUUID) where.fileUUID = fileUUID;
         return this.findAll({ where });
@@ -78,13 +79,13 @@ module.exports = function (sequelize, DataTypes) {
         return this.count({
           where,
           attributes: [
-            [sequelize.literal('DISTINCT `googleId`'), 'googleId']
+            [sequelize.fn('DISTINCT', sequelize.col('email')), 'email']
           ]
         });
       },
       createLog(logInfo) {
-        logInfo.id = uuid.v4();
-        return this.create(logInfo);
+        const defaultRevision = { id: uuid.v4() };
+        return this.findOrCreate({ where: logInfo, defaults: defaultRevision });
       }
     }
   });
