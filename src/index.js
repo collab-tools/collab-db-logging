@@ -46,8 +46,7 @@ export default (config) => {
   models.sequelize = sequelize;
 
   const modelFiles = [
-    'admin', 'commit-log', 'release-log', 'drive-log',
-    'milestone-log', 'revision-log', 'task-log'
+    'admin', 'commit-log', 'release-log', 'file-log', 'milestone-log', 'task-log'
   ];
 
   modelFiles.forEach((model) => {
