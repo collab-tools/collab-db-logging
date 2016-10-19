@@ -28,15 +28,20 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
-      getByProject(projectId, range) {
+      getProjectActivities(projectId, range) {
         const where = { projectId };
         if (range) where.date = { $gt: range };
         return this.findAll({ where });
       },
-      getByRange(range) {
+      getMilestoneActivities(milestoneId, range) {
+        const where = { milestoneId };
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getActivities(range) {
         const where = {};
         if (range) where.date = { $gt: range };
-        return this.findAndCountAll({ where });
+        return this.findAll({ where });
       },
       createLog(logInfo) {
         logInfo.id = uuid.v4();

@@ -36,15 +36,46 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
-      getByProject(projectId, range) {
+      getParticipatingUsers(range) {
+        const where = {};
+        if (range) where.date = { $gt: range };
+        return this.findAll({
+          where,
+          attributes: [
+            [sequelize.fn('DISTINCT', sequelize.col('userId')), 'userId']
+          ]
+        });
+      },
+      getProjectActivities(projectId, range) {
         const where = { projectId };
         if (range) where.date = { $gt: range };
         return this.findAll({ where });
       },
-      getByRange(range) {
+      getMilestoneActivities(milestoneId, range) {
+        const where = { milestoneId };
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getUserActivities(userId, range) {
+        const where = { userId };
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getUserActivitiesByProject(userId, projectId, range) {
+        const where = { userId, projectId };
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getTaskActivities(userId, taskId, range) {
+        const where = { taskId };
+        if (range) where.date = { $gt: range };
+        if (userId) where.userId = userId;
+        return this.findAll({ where });
+      },
+      getActivities(range) {
         const where = {};
         if (range) where.date = { $gt: range };
-        return this.findAndCountAll({ where });
+        return this.findAll({ where });
       },
       createLog(logInfo) {
         logInfo.id = uuid.v4();

@@ -29,6 +29,16 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
+      getParticipatingUsers(range) {
+        const where = {};
+        if (range) where.date = { $gt: range };
+        return this.findAll({
+          where,
+          attributes: [
+            [sequelize.fn('DISTINCT', sequelize.col('githubLogin')), 'githubLogin']
+          ]
+        });
+      },
       getProjectCommits(projectId, range) {
         const where = { projectId };
         if (range) where.date = { $gt: range };

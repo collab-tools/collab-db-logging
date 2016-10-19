@@ -41,7 +41,32 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
-      getUniqueFiles(projectId, email, range) {
+      getActivities(range) {
+        const where = {};
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getFileActivities(fileUUID, range) {
+        const where = { fileUUID };
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getProjectActivities(projectId, range) {
+        const where = { projectId };
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getUserActivities(email, range) {
+        const where = { email };
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getUserActivitiesByProject(email, projectId, range) {
+        const where = { email, projectId };
+        if (range) where.date = { $gt: range };
+        return this.findAll({ where });
+      },
+      getFiles(projectId, email, range) {
         const where = { activity: 'C' };
         if (projectId) where.projectId = projectId;
         if (email) where.email = email;
@@ -64,33 +89,40 @@ module.exports = (sequelize, DataTypes) => {
           ]
         });
       },
-      getRevisions(range) {
+      getChanges(range) {
         const where = { activity: 'U' };
         if (range) where.date = { $gt: range };
         return this.findAll({ where });
       },
-      getFileRevisions(fileUUID, range) {
+      getFileChanges(fileUUID, range) {
         const where = { fileUUID, activity: 'U' };
         if (range) where.date = { $gt: range };
         return this.findAll({ where });
       },
-      getProjectRevisions(projectId, fileUUID, range) {
+      getProjectChanges(projectId, range) {
         const where = { projectId, activity: 'U' };
         if (range) where.date = { $gt: range };
-        if (fileUUID) where.fileUUID = fileUUID;
         return this.findAll({ where });
       },
-      getUserRevisions(email, fileUUID, range) {
+      getUserChanges(email, range) {
         const where = { email, activity: 'U' };
         if (range) where.date = { $gt: range };
-        if (fileUUID) where.fileUUID = fileUUID;
         return this.findAll({ where });
       },
-      getUserRevisionsByProject(email, projectId, fileUUID, range) {
+      getUserRevisionsByProject(email, projectId, range) {
         const where = { email, projectId, activity: 'U' };
         if (range) where.date = { $gt: range };
-        if (fileUUID) where.fileUUID = fileUUID;
         return this.findAll({ where });
+      },
+      getParticipatingUsers(range) {
+        const where = {};
+        if (range) where.date = { $gt: range };
+        return this.findAll({
+          where,
+          attributes: [
+            [sequelize.fn('DISTINCT', sequelize.col('email')), 'email']
+          ]
+        });
       },
       createLog(logInfo) {
         logInfo.id = uuid.v4();
@@ -115,16 +147,6 @@ module.exports = (sequelize, DataTypes) => {
             const fileNameChanged = logInfo.fileName !== instance.fileName;
             return (created || fileNameChanged) ? instance : this.update(logInfo);
           });
-      },
-      getParticipatingUsers(range) {
-        const where = {};
-        if (range) where.date = { $gt: range };
-        return this.count({
-          where,
-          attributes: [
-            [sequelize.fn('DISTINCT', sequelize.col('email')), 'email']
-          ]
-        });
       }
     }
   });
