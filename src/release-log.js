@@ -33,19 +33,19 @@ module.exports = (sequelize, DataTypes) => {
       getRelease(id) {
         return this.findById(id);
       },
-      getReleases(range) {
+      getReleases(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getReleasesCount(range) {
+      getReleasesCount(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.count({ where });
       },
-      getProjectReleases(projectId, range) {
+      getProjectReleases(projectId, start, end) {
         const where = { projectId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
       createLog(logInfo) {

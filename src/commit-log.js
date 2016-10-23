@@ -29,9 +29,9 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
-      getParticipatingUsers(range) {
+      getParticipatingUsers(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({
           where,
           attributes: [
@@ -39,35 +39,35 @@ module.exports = (sequelize, DataTypes) => {
           ]
         });
       },
-      getProjectCommits(projectId, range) {
+      getProjectCommits(projectId, start, end) {
         const where = { projectId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getUserCommits(githubLogin, projectId, range) {
+      getUserCommits(githubLogin, projectId, start, end) {
         const where = { githubLogin };
         if (projectId) where.projectId = projectId;
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getUserCommitsCount(githubLogin, projectId, range) {
+      getUserCommitsCount(githubLogin, projectId, start, end) {
         const where = { githubLogin };
         if (projectId) where.projectId = projectId;
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.count({ where });
       },
-      getCommitsCount(range) {
+      getCommitsCount(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.count({ where });
       },
       getCommit(id) {
         const where = { id };
         return this.findOne({ where });
       },
-      getCommits(range) {
+      getCommits(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
       createLog(logInfo) {

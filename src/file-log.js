@@ -41,36 +41,36 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
-      getActivities(range) {
+      getActivities(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getFileActivities(fileUUID, range) {
+      getFileActivities(fileUUID, start, end) {
         const where = { fileUUID };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getProjectActivities(projectId, range) {
+      getProjectActivities(projectId, start, end) {
         const where = { projectId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getUserActivities(email, range) {
+      getUserActivities(email, start, end) {
         const where = { email };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getUserActivitiesByProject(email, projectId, range) {
+      getUserActivitiesByProject(email, projectId, start, end) {
         const where = { email, projectId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getFiles(projectId, email, range) {
+      getFiles(email, projectId, start, end) {
         const where = { activity: 'C' };
         if (projectId) where.projectId = projectId;
         if (email) where.email = email;
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({
           where,
           attributes: [
@@ -89,34 +89,34 @@ module.exports = (sequelize, DataTypes) => {
           ]
         });
       },
-      getChanges(range) {
+      getChanges(start, end) {
         const where = { activity: 'U' };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getFileChanges(fileUUID, range) {
+      getFileChanges(fileUUID, start, end) {
         const where = { fileUUID, activity: 'U' };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getProjectChanges(projectId, range) {
+      getProjectChanges(projectId, start, end) {
         const where = { projectId, activity: 'U' };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getUserChanges(email, range) {
+      getUserChanges(email, start, end) {
         const where = { email, activity: 'U' };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getUserRevisionsByProject(email, projectId, range) {
+      getUserChangesByProject(email, projectId, start, end) {
         const where = { email, projectId, activity: 'U' };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getParticipatingUsers(range) {
+      getParticipatingUsers(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({
           where,
           attributes: [

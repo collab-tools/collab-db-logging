@@ -36,9 +36,9 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
-      getParticipatingUsers(range) {
+      getParticipatingUsers(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({
           where,
           attributes: [
@@ -46,35 +46,35 @@ module.exports = (sequelize, DataTypes) => {
           ]
         });
       },
-      getProjectActivities(projectId, range) {
+      getProjectActivities(projectId, start, end) {
         const where = { projectId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getMilestoneActivities(milestoneId, range) {
+      getMilestoneActivities(milestoneId, start, end) {
         const where = { milestoneId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getUserActivities(userId, range) {
+      getUserActivities(userId, start, end) {
         const where = { userId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getUserActivitiesByProject(userId, projectId, range) {
+      getUserActivitiesByProject(userId, projectId, start, end) {
         const where = { userId, projectId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getTaskActivities(userId, taskId, range) {
+      getTaskActivities(userId, taskId, start, end) {
         const where = { taskId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         if (userId) where.userId = userId;
         return this.findAll({ where });
       },
-      getActivities(range) {
+      getActivities(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
       createLog(logInfo) {

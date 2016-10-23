@@ -28,19 +28,19 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
-      getProjectActivities(projectId, range) {
+      getProjectActivities(projectId, start, end) {
         const where = { projectId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getMilestoneActivities(milestoneId, range) {
+      getMilestoneActivities(milestoneId, start, end) {
         const where = { milestoneId };
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getActivities(range) {
+      getActivities(start, end) {
         const where = {};
-        if (range) where.date = { $gt: range };
+        where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
       createLog(logInfo) {
