@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         return this.findAll({
           where,
           attributes: [
-            [sequelize.fn('DISTINCT', sequelize.col('githubLogin')), 'githubLogin']
+            [sequelize.fn('DISTINCT', sequelize.col('github_login')), 'githubLogin']
           ]
         });
       },

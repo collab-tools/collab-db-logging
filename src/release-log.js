@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     date: DataTypes.DATE,
-    assets: DataTypes.STRING,
+    assets: DataTypes.TEXT,
     tagName: {
       type: DataTypes.STRING,
       field: 'tag_name'

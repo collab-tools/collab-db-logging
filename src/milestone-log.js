@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       field: 'milestone_id'
     },
+    userId: {
+      type: DataTypes.STRING,
+      field: 'user_id'
+    },
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at'
@@ -28,6 +32,16 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: true,
     classMethods: {
+      getParticipatingUsers(start, end) {
+        const where = {};
+        where.date = { $between: [start, end] };
+        return this.findAll({
+          where,
+          attributes: [
+            [sequelize.fn('DISTINCT', sequelize.col('user_id')), 'userId']
+          ]
+        });
+      },
       getProjectActivities(projectId, start, end) {
         const where = { projectId };
         where.date = { $between: [start, end] };

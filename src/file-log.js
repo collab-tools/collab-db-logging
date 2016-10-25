@@ -1,3 +1,4 @@
+import moment from 'moment';
 import uuid from 'node-uuid';
 
 module.exports = (sequelize, DataTypes) => {
@@ -66,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
-      getFiles(email, projectId, start, end) {
+      getFiles(email, projectId, start = moment(0).toDate(), end = moment().toDate()) {
         const where = { activity: 'C' };
         if (projectId) where.projectId = projectId;
         if (email) where.email = email;
