@@ -57,6 +57,11 @@ module.exports = (sequelize, DataTypes) => {
         where.date = { $between: [start, end] };
         return this.findAll({ where });
       },
+      getUserProjectActivities(userId, projectId, start, end) {
+        const where = { userId, projectId };
+        where.date = { $between: [start, end] };
+        return this.findAll({ where });
+      },
       getMilestoneActivities(milestoneId, start, end) {
         const where = { milestoneId };
         where.date = { $between: [start, end] };
