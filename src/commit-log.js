@@ -39,6 +39,16 @@ module.exports = (sequelize, DataTypes) => {
           ]
         });
       },
+      getParticipatingProjects(start, end) {
+        const where = {};
+        where.date = { $between: [start, end] };
+        return this.findAll({
+          where,
+          attributes: [
+            [sequelize.fn('DISTINCT', sequelize.col('project_id')), 'projectId']
+          ]
+        });
+      },
       getProjectCommits(projectId, start, end) {
         const where = { projectId };
         where.date = { $between: [start, end] };
@@ -73,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       createLog(logInfo) {
         const where = {
           sha: logInfo.sha,
-          projectId: logInfo.sha
+          projectId: logInfo.projectId
         };
         const commitDefault = {
           id: uuid.v4(),

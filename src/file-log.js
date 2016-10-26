@@ -125,6 +125,16 @@ module.exports = (sequelize, DataTypes) => {
           ]
         });
       },
+      getParticipatingProjects(start, end) {
+        const where = {};
+        where.date = { $between: [start, end] };
+        return this.findAll({
+          where,
+          attributes: [
+            [sequelize.fn('DISTINCT', sequelize.col('project_id')), 'projectId']
+          ]
+        });
+      },
       createLog(logInfo) {
         logInfo.id = uuid.v4();
         return this.create(logInfo);
