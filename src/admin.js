@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: DataTypes.STRING,
     role: DataTypes.STRING,
+    settings: DataTypes.TEXT,
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at'
@@ -43,7 +44,12 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate(user) {
         user.id = uuid.v4();
         user.password = bcrypt.hashSync(user.password, saltRound);
-      }
+      },
+      beforeUpdate(user) {
+        if (user.password) {
+          user.password = bcrypt.hashSync(user.password, saltRound);
+        }
+      },
     },
     classMethods: {
       findByName(name) {
@@ -59,9 +65,15 @@ module.exports = (sequelize, DataTypes) => {
           username: payload.username,
           password: payload.password,
           role: payload.role,
-          name: payload.name
+          name: payload.name,
+          settings: payload.settings
         };
         return this.create(actualLoad);
+      },
+      updateUser(payload) {
+        const where = { username: payload.username };
+        delete payload.username;
+        return this.update(payload, { where });
       }
     }
   });
