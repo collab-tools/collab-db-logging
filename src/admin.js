@@ -45,11 +45,6 @@ module.exports = (sequelize, DataTypes) => {
         user.id = uuid.v4();
         user.password = bcrypt.hashSync(user.password, saltRound);
       },
-      beforeUpdate(user) {
-        if (user.password) {
-          user.password = bcrypt.hashSync(user.password, saltRound);
-        }
-      },
     },
     classMethods: {
       findByName(name) {
@@ -71,9 +66,11 @@ module.exports = (sequelize, DataTypes) => {
         return this.create(actualLoad);
       },
       updateUser(payload) {
+        if (payload.password) payload.password = bcrypt.hashSync(payload.password, saltRound);
+        if (payload.settings) payload.settings = JSON.stringify(payload.settings);
         const where = { username: payload.username };
         delete payload.username;
-        return this.update(payload, { where });
+        return this.update(payload, { where, individualHooks: true });
       }
     }
   });
