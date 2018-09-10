@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     password: DataTypes.STRING,
-    role: DataTypes.STRING,
+    isAdmin: DataTypes.BOOLEAN,
     settings: DataTypes.TEXT,
     createdAt: {
       type: DataTypes.DATE,
@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
         const actualLoad = {
           username: payload.username,
           password: payload.password,
-          role: payload.role,
+          isAdmin: payload.isAdmin,
           name: payload.name,
           settings: payload.settings
         };

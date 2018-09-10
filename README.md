@@ -18,4 +18,7 @@ Simply pass in your database configuration that contains `name`, `username`, `pa
 require('collab-db-logging')(databaseConfig);
 ```
 
+## Update Table
+Currently this is linked to the `collab` project, in order to alter a table, need to delete and re-run the `collab` project or write a altering query.
+
 Lookup on [Sequelize Docs](http://docs.sequelizejs.com/en/v3/) to understand how to use each of the model and their class methods within the library.
