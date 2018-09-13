@@ -71,6 +71,9 @@ module.exports = (sequelize, DataTypes) => {
         const where = { username: payload.username };
         delete payload.username;
         return this.update(payload, { where, individualHooks: true });
+      },
+      getAll() {
+        return this.findAll({attributes: { exclude: ["password"] }});
       }
     }
   });
