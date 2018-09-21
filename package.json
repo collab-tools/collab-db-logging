@@ -8,7 +8,8 @@
     "dev": "watch 'npm run compile' src/",
     "test": "npm run compile && mocha --compilers js:babel-core/register",
     "twatch": "npm run compile && mocha --compilers js:babel-core/register --watch",
-    "prepublish": "npm run compile"
+    "prepublish": "npm run compile",
+    "migrate": "node_modules/.bin/sequelize db:migrate"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "mysql2": "^1.1.0",
     "node-uuid": "^1.4.7",
     "sequelize": "^3.24.3",
+    "sequelize-cli": "^4.1.1",
     "winston": "^2.2.0",
     "winston-daily-rotate-file": "^1.3.1"
   },

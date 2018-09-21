@@ -1,4 +1,5 @@
-import uuid from 'node-uuid';
+// import uuid from 'node-uuid';
+const uuid = require('node-uuid');
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('milestone_log', {

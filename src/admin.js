@@ -1,5 +1,7 @@
-import bcrypt from 'bcrypt';
-import uuid from 'node-uuid';
+// import bcrypt from 'bcrypt';
+// import uuid from 'node-uuid';
+const bcrypt = require('bcrypt');
+const uuid = require('node-uuid');
 
 const saltRound = 8;
 
@@ -51,8 +53,8 @@ module.exports = (sequelize, DataTypes) => {
         const where = { name };
         return this.findOne({ where });
       },
-      findByRole(role) {
-        const where = { role };
+      findByisAdmin(isAdmin) {
+        const where = { isAdmin };
         return this.findAll({ where });
       },
       addUser(payload) {

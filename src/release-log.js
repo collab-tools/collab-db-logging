@@ -1,5 +1,7 @@
-import moment from 'moment';
-import uuid from 'node-uuid';
+// import moment from 'moment';
+// import uuid from 'node-uuid';
+const moment = require('moment');
+const uuid = require('node-uuid');
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('release_log', {

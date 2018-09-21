@@ -1,7 +1,12 @@
-import fs from 'fs';
-import winston from 'winston';
-import winstonRotate from 'winston-daily-rotate-file';
-import Sequelize from 'sequelize';
+// import fs from 'fs';
+// import winston from 'winston';
+// import winstonRotate from 'winston-daily-rotate-file';
+// import Sequelize from 'sequelize';
+
+const fs = require('fs');
+const winston = require('winston');
+const winstonRotate = require('winston-daily-rotate-file');
+const Sequelize = require('sequelize');
 
 // Setup logger to log connections and queries send to the database
 // ========================================================================
@@ -32,7 +37,8 @@ function setupLogger(logDir) {
 
 // Setup Sequelize and Connection with Database
 // ======================================================
-export default (config) => {
+module.exports = (config) => {
+// export default (config) => {
   const dbName = config.name;
   const dbUsername = config.username;
   const dbPassword = config.password;

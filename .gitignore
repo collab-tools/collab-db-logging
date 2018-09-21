@@ -23,6 +23,11 @@ wallaby.js
 # JIRA plugin
 atlassian-ide-plugin.xml
 
+# Temp
+migrations
+seeders
+models
+config
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
@@ -33,6 +38,7 @@ fabric.properties
 logs
 *.log
 npm-debug.log*
+.DS_Store
 
 # Runtime data
 pids
@@ -66,3 +72,6 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# config
+config
