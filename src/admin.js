@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     password: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN,
+    role: DataTypes.BOOLEAN,
     settings: DataTypes.TEXT,
     createdAt: {
       type: DataTypes.DATE,
@@ -53,15 +53,15 @@ module.exports = (sequelize, DataTypes) => {
         const where = { name };
         return this.findOne({ where });
       },
-      findByisAdmin(isAdmin) {
-        const where = { isAdmin };
+      findByRole(role) {
+        const where = { role };
         return this.findAll({ where });
       },
       addUser(payload) {
         const actualLoad = {
           username: payload.username,
           password: payload.password,
-          isAdmin: payload.isAdmin,
+          role: payload.role,
           name: payload.name,
           settings: payload.settings
         };
